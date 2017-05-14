@@ -1,0 +1,60 @@
+/*
+ * Copyright 2017, Robert 'Bobby' Zenz
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef X11_C
+#define X11_C
+
+#include <stdio.h>
+#include <string.h>
+#include <sys/param.h>
+#include <unistd.h>
+
+#include "util.c"
+
+
+char* get_next_display() {
+	DIR* dir = opendir("/tmp/.X11-unix/");
+	
+	if (dir) {
+		int number = 0;
+		bool addone = false;
+		
+		struct dirent* entry = NULL;
+		char* filepath = malloc(PATH_MAX + 1);
+		
+		while ((entry = readdir(dir)) != NULL) {
+			if (startswith(entry->d_name, "X")) {
+				addone = true;
+				number = MAX(number, atoi(entry->d_name + 1));
+			}
+		}
+		
+		if (addone) {
+			number++;
+		}
+		
+		char* display = malloc(sizeof(char) * (1 + 8));
+		snprintf(display, sizeof(char) * (1 + 8), ":%d", number);
+		
+		return display;
+	}
+	
+	return ":0";
+}
+
+#endif
+

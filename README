@@ -1,0 +1,26 @@
+x-session-selector
+==================
+
+
+The goal is to provide a simple and lightweight mechanic to select a desktop
+session after login on a tty.
+
+
+License
+-------
+
+x-session-selector is licensed under GNU GPLv3.
+
+
+Usage
+-----
+
+Start it after login on a tty.
+
+
+Features
+--------
+
+ * Allows to select a session/WM from command line.
+ * Starts X with the selected session/WM.
+
