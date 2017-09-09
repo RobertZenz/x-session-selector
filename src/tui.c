@@ -96,6 +96,41 @@ void draw_lists(WINDOW* window, int y, int x, int width, int selectedindex, stru
 	}
 }
 
+void find_item(struct list* lists[], int listscount, char* selection, int* selected, struct item** selecteditem) {
+	if (!selected) {
+		return;
+	}
+	
+	int item_offset = 0;
+	
+	struct list* list = NULL;
+	
+	int index = 0;
+	for (index = 0; index < listscount; index++) {
+		list = lists[index];
+		
+		if (list) {
+			struct item* item = NULL;
+			
+			int item_index = 0;
+			for (item_index = 0; item_index < list->length; item_index++) {
+				item = list->items[item_index];
+				
+				if (item) {
+					if (strcmp(item->exec, selection) == 0) {
+						*selected = item_offset + item_index;
+						*selecteditem = item;
+						
+						return;
+					}
+				}
+			}
+			
+			item_offset = item_offset + item_index;
+		}
+	}
+}
+
 struct list* merge(struct list* lists[], int listscount) {
 	struct list* combined = new_list(NULL);
 	
@@ -116,7 +151,7 @@ struct list* merge(struct list* lists[], int listscount) {
 	return combined;
 }
 
-struct item* userselect(struct list* lists[], int listscount) {
+struct item* userselect(struct list* lists[], int listscount, char* selection) {
 	initscr();
 	curs_set(false);
 	start_color();
@@ -140,10 +175,11 @@ struct item* userselect(struct list* lists[], int listscount) {
 	
 	bool run = true;
 	int key = 0;
-	int selected = 0;
 	bool ok = true;
-	struct item* item = NULL;
+	int selected = 0;
 	struct item* selecteditem = NULL;
+	
+	find_item(lists, listscount, selection, &selected, &selecteditem);
 	
 	while (run) {
 		wattron(window, COLOR_PAIR(COLORS_DEFAULT));

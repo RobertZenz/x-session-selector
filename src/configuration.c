@@ -21,29 +21,36 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 
 struct configuration {
 	bool nonewline;
 	bool printonly;
+	char* selection;
 };
 
 
-struct configuration processargs(int argcount, char** args) {
+struct configuration configure(int argcount, char** args) {
 	struct configuration config;
 	config.nonewline = false;
 	config.printonly = false;
+	config.selection = NULL;
 	
 	int c;
 	
-	while((c = getopt(argcount, args, "no")) != -1) {
+	while((c = getopt(argcount, args, "nos:")) != -1) {
 		switch (c) {
 			case 'n':
 				config.nonewline = true;
 				break;
-				
+			
 			case 'o':
 				config.printonly = true;
+				break;
+			
+			case 's':
+				config.selection = optarg;
 				break;
 		}
 	}
