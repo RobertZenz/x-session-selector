@@ -96,7 +96,7 @@ void draw_lists(WINDOW* window, int y, int x, int width, int selectedindex, stru
 	}
 }
 
-void find_item(struct list* lists[], int listscount, char* selection, int* selected, struct item** selecteditem) {
+void find_item_and_index(struct list* lists[], int listscount, char* selection, int* selected, struct item** selecteditem) {
 	if (!selected) {
 		return;
 	}
@@ -179,7 +179,7 @@ struct item* userselect(struct list* lists[], int listscount, char* selection) {
 	int selected = 0;
 	struct item* selecteditem = NULL;
 	
-	find_item(lists, listscount, selection, &selected, &selecteditem);
+	find_item_and_index(lists, listscount, selection, &selected, &selecteditem);
 	
 	while (run) {
 		wattron(window, COLOR_PAIR(COLORS_DEFAULT));

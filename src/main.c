@@ -33,7 +33,13 @@ int main(int argc, char** argv) {
 	lists[0] = read_sessions("/usr/share/xsessions/");
 	lists[1] = get_windowmanagers();
 	
-	struct item* startitem = userselect(lists, 2, config.selection);
+	struct item* startitem = NULL;
+	
+	startitem = find_item(lists, 2, config.selection);
+	
+	if (!startitem || !config.automatic) {
+		startitem = userselect(lists, 2, config.selection);
+	}
 	
 	if (startitem) {
 		if (config.printonly) {

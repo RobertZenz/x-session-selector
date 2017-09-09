@@ -59,6 +59,36 @@ int compare_item(const void* a, const void* b) {
 	return strcmp(itema->name, itemb->name);
 }
 
+struct item* find_item(struct list* lists[], int listscount, char* itemexec) {
+	if (!itemexec) {
+		return NULL;
+	}
+	
+	struct list* list = NULL;
+	
+	int index = 0;
+	for (index = 0; index < listscount; index++) {
+		list = lists[index];
+		
+		if (list) {
+			struct item* item = NULL;
+			
+			int item_index = 0;
+			for (item_index = 0; item_index < list->length; item_index++) {
+				item = list->items[item_index];
+				
+				if (item) {
+					if (strcmp(item->exec, itemexec) == 0) {
+						return item;
+					}
+				}
+			}
+		}
+	}
+	
+	return NULL;
+}
+
 void free_item(struct item* item) {
 	if (item) {
 		if (item->name) {

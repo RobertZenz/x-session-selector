@@ -25,6 +25,7 @@
 
 
 struct configuration {
+	bool automatic;
 	bool nonewline;
 	bool printonly;
 	char* selection;
@@ -33,14 +34,19 @@ struct configuration {
 
 struct configuration configure(int argcount, char** args) {
 	struct configuration config;
+	config.automatic = false;
 	config.nonewline = false;
 	config.printonly = false;
 	config.selection = NULL;
 	
 	int c;
 	
-	while((c = getopt(argcount, args, "nos:")) != -1) {
+	while((c = getopt(argcount, args, "anos:")) != -1) {
 		switch (c) {
+			case 'a':
+				config.automatic = true;
+				break;
+			
 			case 'n':
 				config.nonewline = true;
 				break;
@@ -52,6 +58,7 @@ struct configuration configure(int argcount, char** args) {
 			case 's':
 				config.selection = optarg;
 				break;
+			
 		}
 	}
 	
