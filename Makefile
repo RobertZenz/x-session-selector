@@ -1,13 +1,14 @@
-CFLAGS = 
-INCLUDES = -lncurses
+CFLAGS = -g
+INCLUDES = -lncurses -lXm -lXt -lX11
 LFLAGS = 
-MAIN = x-session-selector
+MAIN = main
+PROGRAM = xsessionselector
 
 
 all: $(MAIN)
 
 $(MAIN): src/$(MAIN).c
-	$(CC) $< $(CFLAGS) $(INCLUDES) $(LFLAGS) -o $@
+	$(CC) $< $(CFLAGS) $(INCLUDES) $(LFLAGS) -o $(PROGRAM)
 
 format:
 	astyle \
@@ -18,12 +19,12 @@ format:
 		src/*.c
 
 install:
-	cp $(MAIN) /usr/bin/$(MAIN)
-	chmod 755 /usr/bin/$(MAIN)
+	cp $(PROGRAM) /usr/bin/$(PROGRAM)
+	chmod 755 /usr/bin/$(PROGRAM)
 
 uninstall:
-	$(RM) /usr/bin/$(MAIN)
+	$(RM) /usr/bin/$(PROGRAM)
 
 clean:
-	$(RM) $(MAIN)
+	$(RM) $(PROGRAM)
 
