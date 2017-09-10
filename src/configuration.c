@@ -23,33 +23,49 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "tty.c"
+#include "x11.c"
+
 
 struct configuration {
 	bool automatic;
+	char* display;
 	bool nonewline;
 	bool printonly;
 	char* selection;
 	int timeout;
+	char* vt;
 };
 
 
 struct configuration configure(int argcount, char** args) {
 	struct configuration config;
 	config.automatic = false;
+	config.display = get_next_free_display();
 	config.nonewline = false;
 	config.printonly = false;
 	config.selection = NULL;
 	config.timeout = 2;
+	config.vt = get_current_vt();
 	
 	int c;
 	
-	while((c = getopt(argcount, args, "a::nos:t:")) != -1) {
+	while((c = getopt(argcount, args, "a::d:nos:t:v:")) != -1) {
 		switch (c) {
 			case 'a':
 				config.automatic = true;
 				
 				if (optarg) {
 					config.timeout = atoi(optarg);
+				}
+				break;
+			
+			case 'd':
+				if (optarg[0] == ':') {
+					config.display = optarg;
+				}
+				else {
+					config.display = append_to_colon_int(atoi(optarg));
 				}
 				break;
 			
@@ -67,6 +83,10 @@ struct configuration configure(int argcount, char** args) {
 			
 			case 't':
 				config.timeout = atoi(optarg);
+				break;
+			
+			case 'v':
+				config.vt = append_to_vt_int(atoi(optarg));
 				break;
 			
 		}

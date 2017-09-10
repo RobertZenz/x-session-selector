@@ -18,6 +18,7 @@
 #ifndef X11_C
 #define X11_C
 
+#include <dirent.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/param.h>
@@ -26,7 +27,14 @@
 #include "util.c"
 
 
-char* get_next_display() {
+char* append_to_colon_int(int number) {
+	char* display = malloc(sizeof(char) * (1 + 8));
+	snprintf(display, sizeof(char) * (1 + 8), ":%d", number);
+	
+	return display;
+}
+
+char* get_next_free_display() {
 	DIR* dir = opendir("/tmp/.X11-unix/");
 	
 	if (dir) {
@@ -47,10 +55,7 @@ char* get_next_display() {
 			number++;
 		}
 		
-		char* display = malloc(sizeof(char) * (1 + 8));
-		snprintf(display, sizeof(char) * (1 + 8), ":%d", number);
-		
-		return display;
+		return append_to_colon_int(number);
 	}
 	
 	return ":0";

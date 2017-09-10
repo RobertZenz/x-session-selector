@@ -26,6 +26,22 @@
 
 #define NO_TTY -1
 
+char* append_to_vt_char(char* number, int offset, int length) {
+	char* vt = malloc(sizeof(char) * (2 + length + 1));
+	vt[0] = 'v';
+	vt[1] = 't';
+	strncpy(vt + 2, number + offset, length);
+	vt[2 + length] = '\0';
+	
+	return vt;
+}
+
+char* append_to_vt_int(int number) {
+	char buffer[9];
+	int length = snprintf(buffer, 9, "%d", number);
+	
+	return append_to_vt_char(buffer, 0, length);
+}
 
 char* get_current_vt() {
 	char* tty = ttyname(STDIN_FILENO);
@@ -34,13 +50,7 @@ char* get_current_vt() {
 		size_t ttylength = strlen(tty);
 		int numberlength = ttylength - 8;
 		
-		char* vt = malloc(sizeof(char) * (2 + numberlength + 1));
-		vt[0] = 'v';
-		vt[1] = 't';
-		strncpy(vt + 2, tty + 8, numberlength);
-		vt[2 + numberlength] = '\0';
-		
-		return vt;
+		return append_to_vt_char(tty, 8, numberlength);
 	}
 	
 	return NULL;

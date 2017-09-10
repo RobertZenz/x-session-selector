@@ -18,15 +18,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/ioctl.h>
 
 #include "configuration.c"
 #include "list.c"
 #include "sessions.c"
 #include "tui.c"
-#include "tty.c"
 #include "windowmanagers.c"
-#include "x11.c"
 
 
 int main(int argc, char** argv) {
@@ -56,8 +53,8 @@ int main(int argc, char** argv) {
 					"xinit",
 					startitem->exec,
 					"--",
-					get_next_display(),
-					get_current_vt(),
+					config.display,
+					config.vt,
 					(char*)NULL);
 		}
 	}
