@@ -29,6 +29,7 @@ struct configuration {
 	bool nonewline;
 	bool printonly;
 	char* selection;
+	int timeout;
 };
 
 
@@ -38,13 +39,18 @@ struct configuration configure(int argcount, char** args) {
 	config.nonewline = false;
 	config.printonly = false;
 	config.selection = NULL;
+	config.timeout = 2;
 	
 	int c;
 	
-	while((c = getopt(argcount, args, "anos:")) != -1) {
+	while((c = getopt(argcount, args, "a::nos:t:")) != -1) {
 		switch (c) {
 			case 'a':
 				config.automatic = true;
+				
+				if (optarg) {
+					config.timeout = atoi(optarg);
+				}
 				break;
 			
 			case 'n':
@@ -57,6 +63,10 @@ struct configuration configure(int argcount, char** args) {
 			
 			case 's':
 				config.selection = optarg;
+				break;
+			
+			case 't':
+				config.timeout = atoi(optarg);
 				break;
 			
 		}

@@ -15,7 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdbool.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
 #include "configuration.c"
 #include "list.c"
@@ -33,13 +36,12 @@ int main(int argc, char** argv) {
 	lists[0] = read_sessions("/usr/share/xsessions/");
 	lists[1] = get_windowmanagers();
 	
-	struct item* startitem = NULL;
-	
-	startitem = find_item(lists, 2, config.selection);
-	
-	if (!startitem || !config.automatic) {
-		startitem = userselect(lists, 2, config.selection);
-	}
+	struct item* startitem = userselect(
+			lists,
+			2,
+			find_item(lists, 2, config.selection),
+			config.automatic,
+			config.timeout);
 	
 	if (startitem) {
 		if (config.printonly) {

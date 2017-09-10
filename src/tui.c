@@ -96,11 +96,7 @@ void draw_lists(WINDOW* window, int y, int x, int width, int selectedindex, stru
 	}
 }
 
-void find_item_and_index(struct list* lists[], int listscount, char* selection, int* selected, struct item** selecteditem) {
-	if (!selected) {
-		return;
-	}
-	
+int find_index(struct list* lists[], int listscount, struct item* needle) {
 	int item_offset = 0;
 	
 	struct list* list = NULL;
@@ -117,18 +113,17 @@ void find_item_and_index(struct list* lists[], int listscount, char* selection, 
 				item = list->items[item_index];
 				
 				if (item) {
-					if (strcmp(item->exec, selection) == 0) {
-						*selected = item_offset + item_index;
-						*selecteditem = item;
-						
-						return;
+					if (strcmp(item->exec, needle->exec) == 0) {
+						return item_offset + item_index;
 					}
 				}
 			}
 			
-			item_offset = item_offset + item_index;
+			item_offset = item_offset + list->length;
 		}
 	}
+	
+	return -1;
 }
 
 struct list* merge(struct list* lists[], int listscount) {
@@ -151,9 +146,43 @@ struct list* merge(struct list* lists[], int listscount) {
 	return combined;
 }
 
-struct item* userselect(struct list* lists[], int listscount, char* selection) {
+struct item* userselect(struct list* lists[], int listscount, struct item* selection, bool automatic, int automatictimeout) {
 	initscr();
+	noecho();
 	curs_set(false);
+	
+	if (automatic && selection) {
+		timeout(automatictimeout * 1000);
+		
+		mvprintw(
+				0,
+				0,
+				"Automatically selecting %s, continuing in %i seconds...",
+				selection->exec,
+				automatictimeout);
+		mvprintw(
+				1,
+				0,
+				"Press any key to show the selection or press escape to drop to a shell.");
+		
+		switch (getch()) {
+			case KEY_ESC:
+				endwin();
+				return NULL;
+			
+			case ERR:
+				endwin();
+				return selection;
+			
+			default:
+				// Nothing to do here, just break out of the switch.
+				break;
+			
+		}
+		
+		timeout(-1);
+	}
+	
 	start_color();
 	
 	init_pair(COLORS_BACKGROUND, COLOR_BLACK, COLOR_BLUE);
@@ -179,7 +208,9 @@ struct item* userselect(struct list* lists[], int listscount, char* selection) {
 	int selected = 0;
 	struct item* selecteditem = NULL;
 	
-	find_item_and_index(lists, listscount, selection, &selected, &selecteditem);
+	if (selection) {
+		selected = find_index(lists, listscount, selection);
+	}
 	
 	while (run) {
 		wattron(window, COLOR_PAIR(COLORS_DEFAULT));
