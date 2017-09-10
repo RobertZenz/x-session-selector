@@ -152,35 +152,44 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 	curs_set(false);
 	
 	if (automatic && selection) {
-		timeout(automatictimeout * 1000);
+		timeout(1000);
 		
-		mvprintw(
-				0,
-				0,
-				"Automatically selecting %s, continuing in %i seconds...",
-				selection->exec,
-				automatictimeout);
-		mvprintw(
-				1,
-				0,
-				"Press any key to show the selection or press escape to drop to a shell.");
-		
-		switch (getch()) {
-			case KEY_ESC:
-				endwin();
-				return NULL;
+		bool returnselection = true;
+		int counter = 0;
+		for (counter = automatictimeout; counter > 0 && returnselection; counter--) {
+			mvprintw(
+					0,
+					0,
+					"Starting %s in %i seconds...",
+					selection->name,
+					counter);
+			mvprintw(
+					1,
+					0,
+					"Press any key to show the selection or press escape to drop to a shell.");
 			
-			case ERR:
-				endwin();
-				return selection;
-			
-			default:
-				// Nothing to do here, just break out of the switch.
-				break;
-			
+			switch (getch()) {
+				case KEY_ESC:
+					endwin();
+					return NULL;
+				
+				case ERR:
+					// Do nothing, keep looping.
+					break;
+				
+				default:
+					returnselection = false;
+					break;
+				
+			}
 		}
 		
 		timeout(-1);
+		
+		if (returnselection) {
+			endwin();
+			return selection;
+		}
 	}
 	
 	start_color();
