@@ -12,9 +12,12 @@ $(MAIN): src/$(MAIN).c
 
 format:
 	astyle \
+		--align-pointer=type \
+		--align-reference=type \
 		--fill-empty-lines \
-		--indent=tab \
+		--indent=force-tab=4 \
 		--indent-switches \
+		--min-conditional-indent=2 \
 		--suffix=none \
 		src/*.c
 

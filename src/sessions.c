@@ -36,7 +36,7 @@ bool is_session_file(struct dirent* file) {
 	return endswith(file->d_name, ".desktop");
 }
 
-struct item* read_session(char *filepath) {
+struct item* read_session(char* filepath) {
 	struct item* session = NULL;
 	
 	FILE* file = fopen(filepath, "r");

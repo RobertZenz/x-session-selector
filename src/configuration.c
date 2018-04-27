@@ -59,7 +59,7 @@ struct configuration configure(int argcount, char** args) {
 					config.timeout = atoi(optarg);
 				}
 				break;
-			
+				
 			case 'd':
 				if (optarg[0] == ':') {
 					config.display = optarg;
@@ -68,27 +68,27 @@ struct configuration configure(int argcount, char** args) {
 					config.display = append_to_colon_int(atoi(optarg));
 				}
 				break;
-			
+				
 			case 'n':
 				config.nonewline = true;
 				break;
-			
+				
 			case 'o':
 				config.printonly = true;
 				break;
-			
+				
 			case 's':
 				config.selection = optarg;
 				break;
-			
+				
 			case 't':
 				config.timeout = atoi(optarg);
 				break;
-			
+				
 			case 'v':
 				config.vt = append_to_vt_int(atoi(optarg));
 				break;
-			
+				
 		}
 	}
 	

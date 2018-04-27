@@ -34,12 +34,12 @@ int main(int argc, char** argv) {
 	lists[1] = get_windowmanagers();
 	
 	struct item* startitem = userselect(
-			lists,
-			2,
-			find_item(lists, 2, config.selection),
-			config.automatic,
-			config.timeout);
-	
+								 lists,
+								 2,
+								 find_item(lists, 2, config.selection),
+								 config.automatic,
+								 config.timeout);
+								 
 	if (startitem) {
 		if (config.printonly) {
 			printf("%s", startitem->exec);
@@ -49,13 +49,13 @@ int main(int argc, char** argv) {
 			}
 		} else {
 			return execlp(
-					"xinit",
-					"xinit",
-					startitem->exec,
-					"--",
-					config.display,
-					config.vt,
-					(char*)NULL);
+					   "xinit",
+					   "xinit",
+					   startitem->exec,
+					   "--",
+					   config.display,
+					   config.vt,
+					   (char*)NULL);
 		}
 	}
 	

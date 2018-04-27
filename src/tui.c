@@ -91,7 +91,12 @@ void draw_lists(WINDOW* window, int y, int x, int width, int selectedindex, stru
 	
 	int index = 0;
 	for (index = 0; index < listscount; index++) {
-		draw_list(window, y + yoffset + (index * 3), x, width, selectedindex - yoffset, lists[index]);
+		draw_list(
+			window,
+			y + yoffset + (index * 3),
+			x, width,
+			selectedindex - yoffset,
+			lists[index]);
 		yoffset = yoffset + lists[index]->length;
 	}
 }
@@ -158,29 +163,29 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 		int counter = 0;
 		for (counter = automatictimeout; counter > 0 && returnselection; counter--) {
 			mvprintw(
-					0,
-					0,
-					"Starting %s in %i seconds...",
-					selection->name,
-					counter);
+				0,
+				0,
+				"Starting %s in %i seconds...",
+				selection->name,
+				counter);
 			mvprintw(
-					1,
-					0,
-					"Press any key to show the selection or press escape to drop to a shell.");
-			
+				1,
+				0,
+				"Press any key to show the selection or press escape to drop to a shell.");
+				
 			switch (getch()) {
 				case KEY_ESC:
 					endwin();
 					return NULL;
-				
+					
 				case ERR:
 					// Do nothing, keep looping.
 					break;
-				
+					
 				default:
 					returnselection = false;
 					break;
-				
+					
 			}
 		}
 		
@@ -207,7 +212,7 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 	int winy = (LINES - height) / 2;
 	int winx = (COLS - width) / 2;
 	
-	WINDOW *window = newwin(height, width, winy, winx);
+	WINDOW* window = newwin(height, width, winy, winx);
 	keypad(window, true);
 	wbkgd(window, COLOR_PAIR(COLORS_DEFAULT));
 	
