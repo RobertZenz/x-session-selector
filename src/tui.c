@@ -198,9 +198,10 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 	}
 	
 	start_color();
+	use_default_colors();
 	
-	init_pair(COLORS_BACKGROUND, COLOR_BLACK, COLOR_BLUE);
-	init_pair(COLORS_DEFAULT, COLOR_WHITE, COLOR_BLACK);
+	init_pair(COLORS_BACKGROUND, -1, -1);
+	init_pair(COLORS_DEFAULT, -1, -1);
 	init_pair(COLORS_HIGHLIGHT, COLOR_BLACK, COLOR_WHITE);
 	
 	bkgd(COLOR_PAIR(COLORS_BACKGROUND));
