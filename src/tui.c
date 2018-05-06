@@ -156,47 +156,6 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 	noecho();
 	curs_set(false);
 	
-	if (automatic && selection) {
-		timeout(1000);
-		
-		bool returnselection = true;
-		int counter = 0;
-		for (counter = automatictimeout; counter > 0 && returnselection; counter--) {
-			mvprintw(
-				0,
-				0,
-				"Starting %s in %i seconds...",
-				selection->name,
-				counter);
-			mvprintw(
-				1,
-				0,
-				"Press any key to show the selection or press escape to drop to a shell.");
-				
-			switch (getch()) {
-				case KEY_ESC:
-					endwin();
-					return NULL;
-					
-				case ERR:
-					// Do nothing, keep looping.
-					break;
-					
-				default:
-					returnselection = false;
-					break;
-					
-			}
-		}
-		
-		timeout(-1);
-		
-		if (returnselection) {
-			endwin();
-			return selection;
-		}
-	}
-	
 	start_color();
 	use_default_colors();
 	
@@ -227,14 +186,37 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 		selected = find_index(lists, listscount, selection);
 	}
 	
+	bool automaticactive = automatic;
+	int automaticcountdown = automatictimeout * 60;
+	
+	char automessagebuffer[128];
+	int automessagelength = 0;
+	
 	while (run) {
 		wattron(window, COLOR_PAIR(COLORS_DEFAULT));
+		
+		if (automaticactive) {
+			wtimeout(window, 16);
+			
+			automessagelength = sprintf(
+									automessagebuffer,
+									" Starting in %d seconds...",
+									automaticcountdown / 60 + 1);
+		} else {
+			wtimeout(window, -1);
+		}
+		
 		box(window, 0, 0);
 		
 		draw_lists(window, 0, 0, width, ok ? selected : -1, lists, listscount);
 		
 		draw_button(window, height - 1, 3, !ok, " Drop to shell ");
-		draw_button(window, height - 1, width - 9, ok, " OK ");
+		
+		if (automaticactive) {
+			draw_button(window, height - 1, width - automessagelength - 5, ok, automessagebuffer);
+		} else {
+			draw_button(window, height - 1, width - 9, ok, " OK ");
+		}
 		
 		/* Set the cursor to 0, 0 to make sure that pressed keys are not
 		 * printed. */
@@ -251,7 +233,11 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 				break;
 				
 			case KEY_ESC:
-				run = false;
+				if (automaticactive) {
+					automaticactive = false;
+				} else {
+					run = false;
+				}
 				break;
 				
 			case KEY_ENT:
@@ -282,6 +268,19 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 				}
 				ok = true;
 				break;
+				
+			case ERR:
+				// Timeout encountered.
+				automaticcountdown--;
+				
+				if (automaticcountdown <= 0) {
+					run = false;
+				}
+				break;
+		}
+		
+		if (automaticactive && key != ERR) {
+			automaticactive = false;
 		}
 	}
 	
