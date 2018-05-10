@@ -45,7 +45,7 @@ struct item* read_session(char* filepath) {
 		session = new_item(NULL, NULL);
 		
 		char* line = NULL;
-		ssize_t length = 0;
+		size_t length = 0;
 		
 		while (getline(&line, &length, file) > 0) {
 			if (startswith(line, "Exec=")) {

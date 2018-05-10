@@ -42,7 +42,6 @@ char* get_next_free_display() {
 		bool addone = false;
 		
 		struct dirent* entry = NULL;
-		char* filepath = malloc(PATH_MAX + 1);
 		
 		while ((entry = readdir(dir)) != NULL) {
 			if (startswith(entry->d_name, "X")) {
