@@ -48,12 +48,12 @@ int compare_item(const void* a, const void* b) {
 	struct item* itema = *(struct item**)a;
 	struct item* itemb = *(struct item**)b;
 	
-	if (!itema && itemb) {
-		return -1;
-	} else if (itema && !itemb) {
-		return 1;
-	} else if (!itema && !itemb) {
+	if (!itema && !itemb) {
 		return 0;
+	} else if (!itema) {
+		return -1;
+	} else if (!itemb) {
+		return 1;
 	}
 	
 	return strcmp(itema->name, itemb->name);
@@ -77,10 +77,8 @@ struct item* find_item(struct list* lists[], int listscount, char* itemexec) {
 			for (item_index = 0; item_index < list->length; item_index++) {
 				item = list->items[item_index];
 				
-				if (item) {
-					if (strcmp(item->exec, itemexec) == 0) {
-						return item;
-					}
+				if (item && strcmp(item->exec, itemexec) == 0) {
+					return item;
 				}
 			}
 		}

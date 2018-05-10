@@ -138,10 +138,8 @@ int find_index(struct list* lists[], int listscount, struct item* needle) {
 			for (item_index = 0; item_index < list->length; item_index++) {
 				item = list->items[item_index];
 				
-				if (item) {
-					if (strcmp(item->exec, needle->exec) == 0) {
-						return item_offset + item_index;
-					}
+				if (item && strcmp(item->exec, needle->exec) == 0) {
+					return item_offset + item_index;
 				}
 			}
 			
@@ -172,7 +170,8 @@ struct list* merge(struct list* lists[], int listscount) {
 	return combined;
 }
 
-struct item* userselect(struct list* lists[], int listscount, struct item* selection, bool automatic, int automatictimeout) {
+void setup_ncurses()
+{
 	initscr();
 	noecho();
 	curs_set(false);
@@ -185,6 +184,10 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 	init_pair(COLORS_HIGHLIGHT, COLOR_BLACK, COLOR_WHITE);
 	
 	bkgd(COLOR_PAIR(COLORS_BACKGROUND));
+}
+
+struct item* userselect(struct list* lists[], int listscount, struct item* selection, bool automatic, int automatictimeout) {
+	setup_ncurses();
 	
 	struct list* allitems = merge(lists, listscount);
 	
@@ -301,6 +304,10 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 				if (automaticcountdown <= 0) {
 					run = false;
 				}
+				break;
+			
+			default:
+				// Ignore anything else.
 				break;
 		}
 		
