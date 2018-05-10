@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 	struct configuration config = configure(argc, argv);
 	
 	struct list* lists[2];
-	lists[0] = read_sessions("/usr/share/xsessions/");
+	lists[0] = read_sessions(config.xsessionsdir);
 	lists[1] = get_windowmanagers();
 	
 	struct item* startitem = userselect(

@@ -35,6 +35,7 @@ struct configuration {
 	char* selection;
 	int timeout;
 	char* vt;
+	char* xsessionsdir;
 };
 
 
@@ -47,10 +48,11 @@ struct configuration configure(int argcount, char** args) {
 	config.selection = NULL;
 	config.timeout = 2;
 	config.vt = get_current_vt();
+	config.xsessionsdir = "/usr/share/xsessions/";
 	
 	int c;
 	
-	while((c = getopt(argcount, args, "a::d:nos:t:v:")) != -1) {
+	while((c = getopt(argcount, args, "a::d:nos:t:v:x:")) != -1) {
 		switch (c) {
 			case 'a':
 				config.automatic = true;
@@ -87,6 +89,10 @@ struct configuration configure(int argcount, char** args) {
 				
 			case 'v':
 				config.vt = append_to_vt_int(atoi(optarg));
+				break;
+				
+			case 'x':
+				config.xsessionsdir = optarg;
 				break;
 				
 		}
