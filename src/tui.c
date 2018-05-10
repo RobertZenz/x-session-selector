@@ -212,7 +212,8 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 	bool automaticactive = automatic;
 	int automaticcountdown = automatictimeout * 60;
 	
-	char automessagebuffer[128];
+	size_t automessagebuffersize = 128;
+	char automessagebuffer[automessagebuffersize];
 	int automessagelength = 0;
 	
 	while (run) {
@@ -221,8 +222,9 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 		if (automaticactive) {
 			wtimeout(window, 16);
 			
-			automessagelength = sprintf(
+			automessagelength = snprintf(
 									automessagebuffer,
+									automessagebuffersize,
 									" Starting in %d seconds...",
 									automaticcountdown / 60 + 1);
 		} else {
