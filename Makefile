@@ -1,5 +1,5 @@
 CFLAGS = -g -Wall -Werror
-INCLUDES = -lncurses -lXm -lXt -lX11
+INCLUDES = -lncurses
 LFLAGS = 
 MAIN = main
 PROGRAM = xsessionselector
