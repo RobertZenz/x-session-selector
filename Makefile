@@ -1,4 +1,4 @@
-CFLAGS = -g
+CFLAGS = -g -Wall -Werror
 INCLUDES = -lncurses -lXm -lXt -lX11
 LFLAGS = 
 MAIN = main
