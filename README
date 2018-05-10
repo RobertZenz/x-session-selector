@@ -3,7 +3,7 @@ x-session-selector
 
 
 The goal is to provide a simple and lightweight mechanic to select a desktop
-session after login on a tty.
+session after login on a TTY.
 
 
 License
@@ -28,10 +28,11 @@ The parameters it supports:
                 EXEC is expected to be the absolute path to the executable.
     -tTIMEOUT   The timeout to use in conjuntion with -a.
     -vVTNUMBER  The number of the VT on which to start.
+    -xDIR       The directory which contains the xsessions.
+
 
 Features
 --------
 
  * Allows to select a session/WM from command line.
  * Starts X with the selected session/WM.
-
