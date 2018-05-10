@@ -30,6 +30,19 @@
 #define COLORS_HIGHLIGHT 3
 
 
+int count_lists(struct list* lists[], int listscount) {
+	int count = 0;
+	
+	int index = 0;
+	for (index = 0; index < listscount; index++) {
+		if (lists[index] && lists[index]->length > 0) {
+			count++;
+		}
+	}
+	
+	return count;
+}
+
 void draw_separator_line(WINDOW* window, int y, int x, int width) {
 	mvwaddch(window, y, x, ACS_LTEE);
 	mvwhline(window, y, x + 1, 0, width - 2);
@@ -75,9 +88,11 @@ void draw_item(WINDOW* window, int y, int x, int width, int selected, struct ite
 
 void draw_list(WINDOW* window, int y, int x, int width, int selectedindex, struct list* list) {
 	wattron(window, COLOR_PAIR(COLORS_DEFAULT));
+	
 	if (y > 0) {
 		draw_separator_line(window, y, 0, width);
 	}
+	
 	mvwprintw(window, y, 3, " %s ", list->name);
 	
 	int index = 0;
@@ -89,15 +104,21 @@ void draw_list(WINDOW* window, int y, int x, int width, int selectedindex, struc
 void draw_lists(WINDOW* window, int y, int x, int width, int selectedindex, struct list* lists[], int listscount) {
 	int yoffset = 0;
 	
+	int listoffset = 0;
+	
 	int index = 0;
 	for (index = 0; index < listscount; index++) {
-		draw_list(
-			window,
-			y + yoffset + (index * 3),
-			x, width,
-			selectedindex - yoffset,
-			lists[index]);
-		yoffset = yoffset + lists[index]->length;
+		if (lists[index] && lists[index]->length > 0) {
+			draw_list(
+				window,
+				y + yoffset + (listoffset * 3),
+				x,
+				width,
+				selectedindex - yoffset,
+				lists[index]);
+			yoffset = yoffset + lists[index]->length;
+			listoffset++;
+		}
 	}
 }
 
@@ -167,7 +188,9 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 	
 	struct list* allitems = merge(lists, listscount);
 	
-	int height = 2 + allitems->length + (listscount - 1) * 3 + 2;
+	int reallistscount = count_lists(lists, listscount);
+	
+	int height = allitems->length + (reallistscount * 3) + 1;
 	int width = 74;
 	int winy = (LINES - height) / 2;
 	int winx = (COLS - width) / 2;
