@@ -55,6 +55,8 @@ struct item* read_session(char* filepath) {
 			}
 		}
 		
+		fclose(file);
+		
 		if (!session->exec) {
 			free_item(session);
 			session = NULL;
