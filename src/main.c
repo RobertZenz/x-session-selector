@@ -49,8 +49,8 @@ int main(int argc, char** argv) {
 			}
 		} else {
 			return execlp(
-					   "xinit",
-					   "xinit",
+					   config.launcher,
+					   config.launcher,
 					   startitem->exec,
 					   "--",
 					   config.display,

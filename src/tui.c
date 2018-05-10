@@ -305,7 +305,7 @@ struct item* userselect(struct list* lists[], int listscount, struct item* selec
 					run = false;
 				}
 				break;
-			
+				
 			default:
 				// Ignore anything else.
 				break;

@@ -31,6 +31,7 @@ struct configuration {
 	bool automatic;
 	char* display;
 	bool help;
+	char* launcher;
 	bool nonewline;
 	bool printonly;
 	char* selection;
@@ -45,6 +46,7 @@ struct configuration configure(int argcount, char** args) {
 	config.automatic = false;
 	config.display = get_next_free_display();
 	config.help = false;
+	config.launcher = "xinit";
 	config.nonewline = false;
 	config.printonly = false;
 	config.selection = NULL;
@@ -54,7 +56,7 @@ struct configuration configure(int argcount, char** args) {
 	
 	int c;
 	
-	while((c = getopt(argcount, args, "a::d:hnos:t:v:x:")) != -1) {
+	while((c = getopt(argcount, args, "a::d:hl:nos:t:v:x:")) != -1) {
 		switch (c) {
 			case 'a':
 				config.automatic = true;
@@ -75,6 +77,10 @@ struct configuration configure(int argcount, char** args) {
 				
 			case 'h':
 				config.help = true;
+				break;
+				
+			case 'l':
+				config.launcher = optarg;
 				break;
 				
 			case 'n':
