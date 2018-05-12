@@ -29,6 +29,30 @@
 int main(int argc, char** argv) {
 	struct configuration config = configure(argc, argv);
 	
+	if (true || config.help) {
+		printf(
+			"USAGE: xsessionselector [OPTION]\n"
+			"\n"
+			"  --automatic[=TIMEOUT]  Activates automatic selection system, if no timeout\n"
+			"                         is provided it defaults to 2 seconds.\n"
+			"  --display=DISPAY       The display number to assign. If not provided will\n"
+			"                         default to the next free display number.\n"
+			"  --help                 Prints this help.\n"
+			"  --no-newline           When --print-only is provided, does not print\n"
+			"                         a new line after the selection.\n"
+			"  --print-only           Only print the selection to stdout (if any).\n"
+			"  --select=SELECTION     Select this item, the provided argument is\n"
+			"                         the executable.\n"
+			"  --timeout=TIMEOUT      When --automatic is provided, sets the timeout.\n"
+			"  --vt=VT                The number of the virtual terminal to use.\n"
+			"  --xlauncher=XLAUNCHER  The executable to use as launcher for X, defaults\n"
+			"                         to xinit.\n"
+			"  --xsessions-dir=DIR    The directory from which to read the available\n"
+			"                         X sessions, defaults to /usr/share/xsessions/.\n");
+			
+		return EXIT_SUCCESS;
+	}
+	
 	struct list* lists[2];
 	lists[0] = read_sessions(config.xsessionsdir);
 	lists[1] = get_windowmanagers();
@@ -49,8 +73,8 @@ int main(int argc, char** argv) {
 			}
 		} else {
 			return execlp(
-					   config.launcher,
-					   config.launcher,
+					   config.xlauncher,
+					   config.xlauncher,
 					   startitem->exec,
 					   "--",
 					   config.display,

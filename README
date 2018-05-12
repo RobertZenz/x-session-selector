@@ -19,18 +19,24 @@ Start it after login on a tty.
 
 The parameters it supports:
 
-    -a[TIMEOUT] Automatic login, starts the given selection automatically.
-                Accepts an optional timeout in seconds.
-    -dDISPLAY   The X display number to use, for example "1" or ":1".
-    -lCOMMAND   Specify the X launch command, defaults to "init".
-    -n          If -o is provided, no newline is printed.
-    -o          Prints the selected session and exits.
-    -sEXEC      The path of the executable to select by default.
-                EXEC is expected to be the absolute path to the executable.
-    -tTIMEOUT   The timeout to use in conjuntion with -a.
-    -vVTNUMBER  The number of the VT on which to start.
-    -xDIR       The directory which contains the xsessions, defaults to
-                "/usr/share/xsessions/".
+    USAGE: xsessionselector [OPTION]
+    
+      --automatic[=TIMEOUT]  Activates automatic selection system, if no timeout
+                             is provided it defaults to 2 seconds.
+      --display=DISPAY       The display number to assign. If not provided will
+                             default to the next free display number.
+      --help                 Prints this help.
+      --no-newline           When --print-only is provided, does not print
+                             a new line after the selection.
+      --print-only           Only print the selection to stdout (if any).
+      --select=SELECTION     Select this item, the provided argument is
+                             the executable.
+      --timeout=TIMEOUT      When --automatic is provided, sets the timeout.
+      --vt=VT                The number of the virtual terminal to use.
+      --xlauncher=XLAUNCHER  The executable to use as launcher for X, defaults
+                             to xinit.
+      --xsessions-dir=DIR    The directory from which to read the available
+                             X sessions, defaults to /usr/share/xsessions/.
 
 
 Features
