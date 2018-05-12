@@ -29,7 +29,7 @@
 int main(int argc, char** argv) {
 	struct configuration config = configure(argc, argv);
 	
-	if (true || config.help) {
+	if (config.help) {
 		printf(
 			"USAGE: xsessionselector [OPTION]\n"
 			"\n"
