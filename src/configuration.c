@@ -91,8 +91,7 @@ struct configuration configure(int argcount, char** args) {
 			} else if (strcmp(option.name, "display") == 0) {
 				if (optarg[0] == ':') {
 					config.display = optarg;
-				}
-				else {
+				} else {
 					config.display = append_to_colon_int(atoi(optarg));
 				}
 			} else if (strcmp(option.name, "help") == 0) {
