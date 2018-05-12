@@ -21,20 +21,23 @@ The parameters it supports:
 
     USAGE: xsessionselector [OPTION]
     
-      --automatic[=TIMEOUT]  Activates automatic selection system, if no timeout
-                             is provided it defaults to 2 seconds.
+      --automatic[=TIMEOUT]  Activates the automatic selection system, if no
+                             timeout is provided it defaults to 2 seconds.
       --display=DISPAY       The display number to assign. If not provided will
-                             default to the next free display number.
+                             default to the next free X display number.
       --help                 Prints this help.
       --no-newline           When --print-only is provided, does not print
                              a new line after the selection.
       --print-only           Only print the selection to stdout (if any).
       --select=SELECTION     Select this item, the provided argument is
-                             the executable.
-      --timeout=TIMEOUT      When --automatic is provided, sets the timeout.
+                             the executable, f.e. /usr/bin/openbox.
+      --timeout=TIMEOUT      When --automatic is provided, sets the timeout,
+                             defaults to 2 seconds.
       --vt=VT                The number of the virtual terminal to use.
       --xlauncher=XLAUNCHER  The executable to use as launcher for X, defaults
-                             to xinit.
+                             to xinit. The selected session together with
+                             the display number will be given as arguments to
+                             the provided executable.
       --xsessions-dir=DIR    The directory from which to read the available
                              X sessions, defaults to /usr/share/xsessions/.
 
