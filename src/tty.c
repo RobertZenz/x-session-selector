@@ -26,34 +26,60 @@
 
 #define NO_TTY -1
 
-char* append_to_vt_char(char* number, int offset, int length) {
+
+char* append_to_vt_char(char*);
+char* append_to_vt_int(int);
+int get_current_vt_number();
+char* get_current_vt();
+
+
+char* append_to_vt_char(char* value) {
+	int number = 0;
+	
+	if (value[0] == '+' || value[0] == '-') {
+		int currentvt = get_current_vt_number();
+		
+		if (currentvt <= 0) {
+			return NULL;
+		}
+		
+		number = get_current_vt_number() + atoi(value);
+	} else {
+		number = atoi(value);
+	}
+	
+	return append_to_vt_int(number);
+}
+
+char* append_to_vt_int(int number) {
+	if (number <= 0) {
+		return NULL;
+	}
+	
+	char buffer[9];
+	int length = snprintf(buffer, 9, "%d", number);
+	
 	char* vt = malloc(sizeof(char) * (2 + length + 1));
 	vt[0] = 'v';
 	vt[1] = 't';
-	strncpy(vt + 2, number + offset, length);
+	strncpy(vt + 2, buffer, length);
 	vt[2 + length] = '\0';
 	
 	return vt;
 }
 
-char* append_to_vt_int(int number) {
-	char buffer[9];
-	int length = snprintf(buffer, 9, "%d", number);
-	
-	return append_to_vt_char(buffer, 0, length);
-}
-
-char* get_current_vt() {
+int get_current_vt_number() {
 	char* tty = ttyname(STDIN_FILENO);
 	
 	if (startswith(tty, "/dev/tty")) {
-		size_t ttylength = strlen(tty);
-		int numberlength = ttylength - 8;
-		
-		return append_to_vt_char(tty, 8, numberlength);
+		return atoi(tty + 8);
 	}
 	
-	return NULL;
+	return NO_TTY;
+}
+
+char* get_current_vt() {
+	return append_to_vt_int(get_current_vt_number());
 }
 
 #endif

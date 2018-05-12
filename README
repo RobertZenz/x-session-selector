@@ -33,7 +33,10 @@ The parameters it supports:
                              the executable, f.e. /usr/bin/openbox.
       --timeout=TIMEOUT      When --automatic is provided, sets the timeout,
                              defaults to 2 seconds.
-      --vt=VT                The number of the virtual terminal to use.
+      --vt=VT                The number of the virtual terminal to use,
+                             defaults to the current VT. Provided number must
+                             be positive, but can be prefixed with + or - to
+                             to change relative from the current VT.
       --xlauncher=XLAUNCHER  The executable to use as launcher for X, defaults
                              to xinit. The selected session together with
                              the display number will be given as arguments to

@@ -105,7 +105,7 @@ struct configuration configure(int argcount, char** args) {
 			} else if (strcmp(option.name, "timeout") == 0) {
 				config.timeout = atoi(optarg);
 			} else if (strcmp(option.name, "vt") == 0) {
-				config.vt = append_to_vt_int(atoi(optarg));
+				config.vt = append_to_vt_char(optarg);
 			} else if (strcmp(option.name, "xlauncher") == 0) {
 				config.xlauncher = optarg;
 			} else if (strcmp(option.name, "xsessions-dir") == 0) {
