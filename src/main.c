@@ -29,6 +29,12 @@
 int main(int argc, char** argv) {
 	struct configuration config = configure(argc, argv);
 	
+	if (config.error) {
+		fprintf(stderr, "Try 'xsessionselector --help' for more information.\n");
+		
+		return EXIT_FAILURE;
+	}
+	
 	if (config.help) {
 		printf(
 			"USAGE: xsessionselector [OPTION]\n"

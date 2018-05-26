@@ -31,6 +31,7 @@
 struct configuration {
 	bool automatic;
 	char* display;
+	bool error;
 	bool help;
 	bool nonewline;
 	bool printonly;
@@ -61,6 +62,7 @@ struct configuration configure(int argcount, char** args) {
 	struct configuration config;
 	config.automatic = false;
 	config.display = get_next_free_display();
+	config.error = false;
 	config.help = false;
 	config.nonewline = false;
 	config.printonly = false;
@@ -111,6 +113,8 @@ struct configuration configure(int argcount, char** args) {
 			} else if (strcmp(option.name, "xsessions-dir") == 0) {
 				config.xsessionsdir = optarg;
 			}
+		} else if (value == '?') {
+			config.error = true;
 		}
 	}
 	
