@@ -1,0 +1,26 @@
+Changes
+=======
+
+
+0.2
+---
+
+ * #1, added `--xlauncher` to be able to specify the X launcher command
+   (defaults to `xinit`).
+ * #2, the directory from which the X session launchers are read is now
+   configurable through `--xsessions-dir`.
+ * #4, When specifying virtual terminals with `--vt` a `+` or `-` prefixe can
+   be used to use one relative to the current one.
+ * Changed colors to be the default terminal colors.
+ * Automatic mode is now showing the whole menu instead of a simple message.
+ * Lists are now always correctly drawn.
+ * Fixed that launcher files would not be closed after being read.
+ * Migrated to long options only (for the time being).
+ * Added `--help` output.
+ * Improved behavior when an invalid argument is specified.
+
+
+0.1
+---
+
+ * Initial release.

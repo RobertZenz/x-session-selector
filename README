@@ -2,14 +2,23 @@ x-session-selector
 ==================
 
 
-The goal is to provide a simple and lightweight mechanic to select a desktop
-session after login on a TTY.
+The goal is to provide a simple and lightweight mechanic to start a X session.
+x-session-selector can be used as a "better" `startx` replacement, but its main
+usage case is to provide a X session selection after a user has logged in on
+a TTY.
 
 
 License
 -------
 
 x-session-selector is licensed under GNU GPLv3.
+
+
+Features
+--------
+
+ * Allows to select a session/WM on the command line.
+ * Starts X with the selected session/WM.
 
 
 Usage
@@ -45,8 +54,32 @@ The parameters it supports:
                              X sessions, defaults to /usr/share/xsessions/.
 
 
-Features
+Examples
 --------
 
- * Allows to select a session/WM from command line.
- * Starts X with the selected session/WM.
+The most simple example is to use it as a `startx` replacement:
+
+    $ xsessionselector
+
+However, after a login it might be wanted to automatically select one entry
+and automatically starting this entry after a certain amount of time:
+
+    $ xsessionselector --automatic=5 --select=/usr/bin/openbox
+
+For testing purposes, or if you just want to use it as fancy selector,
+x-session-selector can also only print the selected entry:
+
+    $ xsessionselector --print-only
+
+In a similar manner if you have trouble with it, you can set the X launher to
+`echo` to see what exactly is being started:
+
+    $ xsessionselector --xlauncher=echo
+
+
+Dependencies
+------------
+
+Dependencies are minimal:
+
+ * ncurses
