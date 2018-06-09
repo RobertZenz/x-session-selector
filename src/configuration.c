@@ -36,6 +36,7 @@ struct configuration {
 	bool nonewline;
 	bool printonly;
 	char* selection;
+	char* shell;
 	int timeout;
 	char* vt;
 	char* xlauncher;
@@ -50,6 +51,7 @@ static struct option options[] = {
 	{ "no-newline", no_argument, 0, 0 },
 	{ "print-only", no_argument, 0, 0 },
 	{ "select", required_argument, 0, 0 },
+	{ "shell", required_argument, 0, 0 },
 	{ "timeout", required_argument, 0, 0 },
 	{ "vt", required_argument, 0, 0 },
 	{ "xlauncher", required_argument, 0, 0 },
@@ -67,6 +69,7 @@ struct configuration configure(int argcount, char** args) {
 	config.nonewline = false;
 	config.printonly = false;
 	config.selection = NULL;
+	config.shell = NULL;
 	config.timeout = 2;
 	config.vt = get_current_vt();
 	config.xlauncher = "xinit";
@@ -104,6 +107,8 @@ struct configuration configure(int argcount, char** args) {
 				config.printonly = true;
 			} else if (strcmp(option.name, "select") == 0) {
 				config.selection = optarg;
+			} else if (strcmp(option.name, "shell") == 0) {
+				config.shell = optarg;
 			} else if (strcmp(option.name, "timeout") == 0) {
 				config.timeout = atoi(optarg);
 			} else if (strcmp(option.name, "vt") == 0) {

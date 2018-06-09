@@ -40,6 +40,10 @@ The parameters it supports:
       --print-only           Only print the selection to stdout (if any).
       --select=SELECTION     Select this item, the provided argument is
                              the executable, f.e. /usr/bin/openbox.
+      --shell=SHELL          The executable to start when dropping to shell,
+                             defaults to nothing. If this is not provided,
+                             the program will simply exit, if a value is
+                             provided, it will be executed.
       --timeout=TIMEOUT      When --automatic is provided, sets the timeout,
                              defaults to 2 seconds.
       --vt=VT                The number of the virtual terminal to use,

@@ -49,6 +49,10 @@ int main(int argc, char** argv) {
 			"  --print-only           Only print the selection to stdout (if any).\n"
 			"  --select=SELECTION     Select this item, the provided argument is\n"
 			"                         the executable, f.e. /usr/bin/openbox.\n"
+			"  --shell=SHELL          The executable to start when dropping to shell,\n"
+			"                         defaults to nothing. If this is not provided,\n"
+			"                         the program will simply exit, if a value is\n"
+			"                         provided, it will be executed.\n"
 			"  --timeout=TIMEOUT      When --automatic is provided, sets the timeout,\n"
 			"                         defaults to 2 seconds.\n"
 			"  --vt=VT                The number of the virtual terminal to use,\n"
@@ -93,6 +97,11 @@ int main(int argc, char** argv) {
 					   config.vt,
 					   (char*)NULL);
 		}
+	} else if (config.shell) {
+		return execlp(
+				   config.shell,
+				   config.shell,
+				   (char*)NULL);
 	}
 	
 	return EXIT_SUCCESS;
