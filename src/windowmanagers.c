@@ -29,7 +29,7 @@
 
 
 void add_windowmanager(struct list* windowmanagers, char* name, char* exec) {
-	add_to_list(windowmanagers, new_item(strdup(name), strdup(exec)));
+	add_to_list(windowmanagers, new_item(strdup(name), X, strdup(exec)));
 }
 
 struct list* get_available(struct list* programs) {
@@ -50,7 +50,7 @@ struct list* get_available(struct list* programs) {
 			make_path(programpath, piece, program->exec);
 			
 			if (access(programpath, F_OK | X_OK) != -1) {
-				add_to_list(availables, new_item(strdup(program->name), strdup(programpath)));
+				add_to_list(availables, new_item(strdup(program->name), X, strdup(programpath)));
 				free_item(remove_from_list(programs, index));
 				
 				index--;

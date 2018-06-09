@@ -59,6 +59,9 @@ int main(int argc, char** argv) {
 			"                         defaults to the current VT. Provided number must\n"
 			"                         be positive, but can be prefixed with + or - to\n"
 			"                         to change relative from the current VT.\n"
+			"  --wsessions-dir=DIR    The directory from which to read the available\n"
+			"                         Wayland sessions, defaults to\n"
+			"                         /usr/share/wayland-sessions/.\n"
 			"  --xlauncher=XLAUNCHER  The executable to use as launcher for X, defaults\n"
 			"                         to xinit. The selected session together with\n"
 			"                         the display number will be given as arguments to\n"
@@ -69,14 +72,15 @@ int main(int argc, char** argv) {
 		return EXIT_SUCCESS;
 	}
 	
-	struct list* lists[2];
-	lists[0] = read_sessions(config.xsessionsdir);
-	lists[1] = get_windowmanagers();
+	struct list* lists[3];
+	lists[0] = read_sessions(config.xsessionsdir, X);
+	lists[1] = read_sessions(config.wsessionsdir, WAYLAND);
+	lists[2] = get_windowmanagers();
 	
 	struct item* startitem = userselect(
 								 lists,
-								 2,
-								 find_item(lists, 2, config.selection),
+								 3,
+								 find_item(lists, 3, config.selection),
 								 config.automatic,
 								 config.timeout);
 								 
@@ -88,14 +92,23 @@ int main(int argc, char** argv) {
 				printf("\n");
 			}
 		} else {
-			return execlp(
-					   config.xlauncher,
-					   config.xlauncher,
-					   startitem->exec,
-					   "--",
-					   config.display,
-					   config.vt,
-					   (char*)NULL);
+			if (startitem->type == X) {
+				return execlp(
+						   config.xlauncher,
+						   config.xlauncher,
+						   startitem->exec,
+						   "--",
+						   config.display,
+						   config.vt,
+						   (char*)NULL);
+			} else if (startitem->type == WAYLAND) {
+				int size = 0;
+				char** command = split(startitem->exec, &size);
+				
+				return execvp(
+						   command[0],
+						   command);
+			}
 		}
 	} else if (config.shell) {
 		return execlp(

@@ -19,6 +19,7 @@
 #define UTIL_C
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -86,6 +87,40 @@ bool startswith(const char* value, const char* prefix) {
 	}
 	
 	return strncmp(value, prefix, prefix_length) == 0;
+}
+
+char** split(char* value, int* size) {
+	// Trailing NULL and assume at least one item.
+	*size = *size + 2;
+	
+	char** splitted = malloc(sizeof(char*) * *size);
+	
+	char* beginning = value;
+	bool quoted = false;
+	int index = 0;
+	
+	while (value[0]) {
+		if (value[0] == '"') {
+			quoted = !quoted;
+		} else if (!quoted && value[0] == ' ') {
+			*size = *size + 1;
+			splitted = realloc(splitted, sizeof(char*) * *size);
+			
+			value[0] = '\0';
+			splitted[index++] = beginning;
+			beginning = value + 1;
+		}
+		
+		value++;
+	}
+	splitted[index++] = beginning;
+	
+	while (index < *size) {
+		printf("hit\n");
+		splitted[index++] = NULL;
+	}
+	
+	return splitted;
 }
 
 #endif

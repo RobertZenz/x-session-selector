@@ -50,6 +50,9 @@ The parameters it supports:
                              defaults to the current VT. Provided number must
                              be positive, but can be prefixed with + or - to
                              to change relative from the current VT.
+      --wsessions-dir=DIR    The directory from which to read the available
+                             Wayland sessions, defaults to
+                             /usr/share/wayland-sessions/.
       --xlauncher=XLAUNCHER  The executable to use as launcher for X, defaults
                              to xinit. The selected session together with
                              the display number will be given as arguments to

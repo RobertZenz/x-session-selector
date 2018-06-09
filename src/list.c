@@ -19,8 +19,14 @@
 #define LIST_C
 
 
+typedef enum {
+	WAYLAND,
+	X
+} type;
+
 struct item {
 	char* name;
+	type type;
 	char* exec;
 };
 
@@ -113,9 +119,10 @@ void free_list(struct list* list) {
 	}
 }
 
-struct item* new_item(char* name, char* exec) {
+struct item* new_item(char* name, type type, char* exec) {
 	struct item* item = malloc(sizeof(struct item));
 	item->name = name;
+	item->type = type;
 	item->exec = exec;
 	
 	return item;

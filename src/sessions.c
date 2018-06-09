@@ -36,13 +36,13 @@ bool is_session_file(struct dirent* file) {
 	return endswith(file->d_name, ".desktop");
 }
 
-struct item* read_session(char* filepath) {
+struct item* read_session(char* filepath, type type) {
 	struct item* session = NULL;
 	
 	FILE* file = fopen(filepath, "r");
 	
 	if (file) {
-		session = new_item(NULL, NULL);
+		session = new_item(NULL, type, NULL);
 		
 		char* line = NULL;
 		size_t length = 0;
@@ -68,7 +68,7 @@ struct item* read_session(char* filepath) {
 	return session;
 }
 
-struct list* read_sessions(char* dirpath) {
+struct list* read_sessions(char* dirpath, type type) {
 	DIR* dir = opendir(dirpath);
 	
 	if (dir) {
@@ -81,7 +81,7 @@ struct list* read_sessions(char* dirpath) {
 			if (is_session_file(entry)) {
 				make_path(filepath, dirpath, entry->d_name);
 				
-				add_to_list(sessions, read_session(filepath));
+				add_to_list(sessions, read_session(filepath, type));
 			}
 		}
 		

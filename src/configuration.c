@@ -39,6 +39,7 @@ struct configuration {
 	char* shell;
 	int timeout;
 	char* vt;
+	char* wsessionsdir;
 	char* xlauncher;
 	char* xsessionsdir;
 };
@@ -54,6 +55,7 @@ static struct option options[] = {
 	{ "shell", required_argument, 0, 0 },
 	{ "timeout", required_argument, 0, 0 },
 	{ "vt", required_argument, 0, 0 },
+	{ "wsessions-dir", required_argument, 0, 0 },
 	{ "xlauncher", required_argument, 0, 0 },
 	{ "xsessions-dir", required_argument, 0, 0 },
 	{ NULL, 0, NULL, 0 }
@@ -72,6 +74,7 @@ struct configuration configure(int argcount, char** args) {
 	config.shell = NULL;
 	config.timeout = 2;
 	config.vt = get_current_vt();
+	config.wsessionsdir = "/usr/share/wayland-sessions/";
 	config.xlauncher = "xinit";
 	config.xsessionsdir = "/usr/share/xsessions/";
 	
@@ -113,6 +116,8 @@ struct configuration configure(int argcount, char** args) {
 				config.timeout = atoi(optarg);
 			} else if (strcmp(option.name, "vt") == 0) {
 				config.vt = append_to_vt_char(optarg);
+			} else if (strcmp(option.name, "wsessions-dir") == 0) {
+				config.wsessionsdir = optarg;
 			} else if (strcmp(option.name, "xlauncher") == 0) {
 				config.xlauncher = optarg;
 			} else if (strcmp(option.name, "xsessions-dir") == 0) {
