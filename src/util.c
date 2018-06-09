@@ -90,8 +90,8 @@ bool startswith(const char* value, const char* prefix) {
 }
 
 char** split(char* value, int* size, int offset) {
-	// Trailing NULL and assume at least one item.
-	*size = *size + 2;
+	// Trailing NULL.
+	*size = *size + 1;
 	
 	char** splitted = malloc(sizeof(char*) * *size);
 	
@@ -113,6 +113,8 @@ char** split(char* value, int* size, int offset) {
 		
 		value++;
 	}
+	*size = *size + 1;
+	splitted = realloc(splitted, sizeof(char*) * *size);
 	splitted[index++] = beginning;
 	
 	while (index < *size) {
