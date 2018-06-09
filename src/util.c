@@ -89,7 +89,7 @@ bool startswith(const char* value, const char* prefix) {
 	return strncmp(value, prefix, prefix_length) == 0;
 }
 
-char** split(char* value, int* size) {
+char** split(char* value, int* size, int offset) {
 	// Trailing NULL and assume at least one item.
 	*size = *size + 2;
 	
@@ -97,7 +97,7 @@ char** split(char* value, int* size) {
 	
 	char* beginning = value;
 	bool quoted = false;
-	int index = 0;
+	int index = offset;
 	
 	while (value[0]) {
 		if (value[0] == '"') {
@@ -116,7 +116,6 @@ char** split(char* value, int* size) {
 	splitted[index++] = beginning;
 	
 	while (index < *size) {
-		printf("hit\n");
 		splitted[index++] = NULL;
 	}
 	
