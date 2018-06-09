@@ -38,6 +38,7 @@ struct configuration {
 	char* selection;
 	char* shell;
 	int timeout;
+	bool ttyonly;
 	char* vt;
 	char* wsessionsdir;
 	char* xlauncher;
@@ -54,6 +55,7 @@ static struct option options[] = {
 	{ "select", required_argument, 0, 0 },
 	{ "shell", required_argument, 0, 0 },
 	{ "timeout", required_argument, 0, 0 },
+	{ "tty-only", no_argument, 0, 0 },
 	{ "vt", required_argument, 0, 0 },
 	{ "wsessions-dir", required_argument, 0, 0 },
 	{ "xlauncher", required_argument, 0, 0 },
@@ -73,6 +75,7 @@ struct configuration configure(int argcount, char** args) {
 	config.selection = NULL;
 	config.shell = NULL;
 	config.timeout = 2;
+	config.ttyonly = false;
 	config.vt = get_current_vt();
 	config.wsessionsdir = "/usr/share/wayland-sessions/";
 	config.xlauncher = "xinit";
@@ -114,6 +117,8 @@ struct configuration configure(int argcount, char** args) {
 				config.shell = optarg;
 			} else if (strcmp(option.name, "timeout") == 0) {
 				config.timeout = atoi(optarg);
+			} else if (strcmp(option.name, "tty-only") == 0) {
+				config.ttyonly = true;
 			} else if (strcmp(option.name, "vt") == 0) {
 				config.vt = append_to_vt_char(optarg);
 			} else if (strcmp(option.name, "wsessions-dir") == 0) {

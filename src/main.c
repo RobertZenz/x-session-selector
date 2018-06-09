@@ -56,6 +56,10 @@ int main(int argc, char** argv) {
 			"                         provided, it will be executed.\n"
 			"  --timeout=TIMEOUT      When --automatic is provided, sets the timeout,\n"
 			"                         defaults to 2 seconds.\n"
+			"  --tty-only             Only present the prompt when being on a TTY.\n"
+			"                         When not on a TTY the program will exit, except\n"
+			"                         if --shell has been provided, then the shell will\n"
+			"                         be executed.\n"
 			"  --vt=VT                The number of the virtual terminal to use,\n"
 			"                         defaults to the current VT. Provided number must\n"
 			"                         be positive, but can be prefixed with + or - to\n"
@@ -71,6 +75,19 @@ int main(int argc, char** argv) {
 			"                         X sessions, defaults to /usr/share/xsessions/.\n");
 			
 		return EXIT_SUCCESS;
+	}
+	
+	if (config.ttyonly && get_current_vt_number() == NO_TTY) {
+		if (config.shell) {
+			execlp(
+				config.shell,
+				config.shell,
+				(char*)NULL);
+				
+			return errno;
+		} else {
+			return EXIT_SUCCESS;
+		}
 	}
 	
 	struct list* lists[3];
