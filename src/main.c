@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -93,28 +94,34 @@ int main(int argc, char** argv) {
 			}
 		} else {
 			if (startitem->type == X) {
-				return execlp(
-						   config.xlauncher,
-						   config.xlauncher,
-						   startitem->exec,
-						   "--",
-						   config.display,
-						   config.vt,
-						   (char*)NULL);
+				execlp(
+					config.xlauncher,
+					config.xlauncher,
+					startitem->exec,
+					"--",
+					config.display,
+					config.vt,
+					(char*)NULL);
+					
+				return errno;
 			} else if (startitem->type == WAYLAND) {
 				int size = 0;
 				char** command = split(startitem->exec, &size);
 				
-				return execvp(
-						   command[0],
-						   command);
+				execvp(
+					command[0],
+					command);
+					
+				return errno;
 			}
 		}
 	} else if (config.shell) {
-		return execlp(
-				   config.shell,
-				   config.shell,
-				   (char*)NULL);
+		execlp(
+			config.shell,
+			config.shell,
+			(char*)NULL);
+			
+		return errno;
 	}
 	
 	return EXIT_SUCCESS;
