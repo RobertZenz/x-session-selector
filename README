@@ -82,7 +82,7 @@ x-session-selector can also only print the selected entry:
 
     $ xsessionselector --print-only
 
-In a similar manner if you have trouble with it, you can set the X launher to
+In a similar manner if you have trouble with it, you can set the X launcher to
 `echo` to see what exactly is being started:
 
     $ xsessionselector --xlauncher=echo
