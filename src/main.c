@@ -93,27 +93,25 @@ int main(int argc, char** argv) {
 				printf("\n");
 			}
 		} else {
+			int size = 0;
+			char** command = NULL;
+			
 			if (startitem->type == X) {
-				execlp(
-					config.xlauncher,
-					config.xlauncher,
-					startitem->exec,
-					"--",
-					config.display,
-					config.vt,
-					(char*)NULL);
-					
-				return errno;
+				size = 4;
+				command = split(startitem->exec, &size, 1);
+				command[0] = config.xlauncher;
+				command[size - 4] = "--";
+				command[size - 3] = config.display;
+				command[size - 2] = config.vt;
 			} else if (startitem->type == WAYLAND) {
-				int size = 0;
-				char** command = split(startitem->exec, &size);
-				
-				execvp(
-					command[0],
-					command);
-					
-				return errno;
+				command = split(startitem->exec, &size, 0);
 			}
+			
+			execvp(
+				command[0],
+				command);
+				
+			return errno;
 		}
 	} else if (config.shell) {
 		execlp(
