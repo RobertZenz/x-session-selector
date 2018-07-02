@@ -1,6 +1,14 @@
 Changes
 =======
 
+0.3
+---
+
+ * #5, Added ability to launch Wayland sessions.
+ * #6, Added --shell parameter.
+ * Improved error handling.
+ * Added --tty-only parameter.
+
 
 0.2
 ---
